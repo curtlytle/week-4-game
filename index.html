@@ -2,9 +2,58 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Week4</title>
+    <title>WWII</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <!-- Added a link to Bootstrap-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+          integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
 </head>
 <body>
+<header class="container-fluid">
+    <h1>World War II Tank Battles</h1>
+</header>
 
+<div class="container">
+    <div class="row">
+        <div class="col-med-12 instructions">
+            Instructions
+        </div>
+    </div>
+    <div class="row battle">
+        <div class="col-sm-3">
+            <div id="you">You</div>
+        </div>
+        <div class="col-sm-1">
+            <div id="vs">VS</div>
+        </div>
+        <div class="col-sm-3">
+            <div id="them">Them</div>
+        </div>
+        <div class="col-sm-5">
+            <div class="piecediv">
+                <img src="assets/images/americanTank.png" alt="" class="pieces">
+            </div>
+            <div>
+                <img src="assets/images/germanTank1.png" alt="" class="pieces">
+            </div>
+            <div>
+                <img src="assets/images/britishTank.png" alt="" class="pieces">
+            </div>
+            <div>
+                <img src="assets/images/russianTank.png" alt="" class="pieces">
+            </div>
+            <div>
+                <img src="assets/images/germanTank2.png" alt="" class="pieces">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="footer navbar-fixed-bottom">
+</div>
+<script src="assets/javascript/game.js"></script>
 </body>
 </html>
