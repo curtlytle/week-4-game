@@ -41,8 +41,12 @@ $(document).ready(function () {
     }
 
     function getTankDiv(tank) {
-        var $div = $("<div>", {id: tank.tankId, class: "tank"});
-        var $div = $div.prepend($('<img>', {id: tank.tankId + 'Imgid', src: tank.tankImage, class: "pieces"}));
+        var $div = $("<div>", {id: tank.tankId, class: "tank clearfix"});
+        var $shell = $("<div>", {id: tank.tankId, class: "tankshell"});
+        $shell.prepend($('<img>', {id: tank.tankId + 'Imgid', src: tank.tankImage, class: "pieces"}));
+        $div.append($shell);
+        var $scorediv = $("<div>", {class: "tankscore"});
+        $div.append($scorediv);
 
         return $div;
     }

@@ -27,13 +27,30 @@ body {
     border-color: #8a6d3b;
 }
 
-#you {
-    background-color: #999999;
-}
-
 .pieces {
     width: 150px;
     height: 95px;
+}
+
+.tankshell {
+    float: left;
+    position: relative;
+}
+
+.tankscore {
+    float: none;
+    background: #6ea3da;
+    color: white;
+    position: relative;
+    bottom: -87px;
+    width: 150px;
+    padding: 6px;
+    text-align: center;
+    font-size: xx-small;
+}
+
+#you {
+    background-color: #999999;
 }
 
 .footer {
@@ -51,4 +68,10 @@ body {
 
 .footer:after {
     content: "\00a9 Copyright 2017 Curtis Lytle";
+}
+
+.clearfix::after {
+    content: "";
+    display: block;
+    clear: both;
 }
