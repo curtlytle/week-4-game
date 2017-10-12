@@ -8,8 +8,8 @@ body {
     background-image: url("../images/topography.png");
 }
 
-.instructions {
-    text-align: center;
+.instructions1, .instructions2 {
+    /*text-align: center;*/
     font-size: x-large;
 }
 
