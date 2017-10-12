@@ -1,10 +1,10 @@
 $(document).ready(function () {
     var tanks = [
-        {tankId: "tank1", tankName: "American M26", hp: 55, tankImage: "assets/images/americanTank.png", friend: -1},
-        {tankId: "tank2", tankName: "German Panther", hp: 65, tankImage: "assets/images/germanTank1.png", friend: -1},
+        {tankId: "tank1", tankName: "American M26", hp: 75, tankImage: "assets/images/americanTank.png", friend: -1},
+        {tankId: "tank2", tankName: "German Panther", hp: 80, tankImage: "assets/images/germanTank1.png", friend: -1},
         {tankId: "tank3", tankName: "British Spitfire", hp: 65, tankImage: "assets/images/britishTank.png", friend: -1},
-        {tankId: "tank4", tankName: "German Panzer", hp: 65, tankImage: "assets/images/germanTank2.png", friend: -1},
-        {tankId: "tank5", tankName: "Russian Tiger", hp: 65, tankImage: "assets/images/russianTank.png", friend: -1}
+        {tankId: "tank4", tankName: "German Panzer", hp: 72, tankImage: "assets/images/germanTank2.png", friend: -1},
+        {tankId: "tank5", tankName: "Russian Tiger", hp: 60, tankImage: "assets/images/russianTank.png", friend: -1}
     ];
 
     var friendCnt = 0;
@@ -41,12 +41,20 @@ $(document).ready(function () {
     }
 
     function getTankDiv(tank) {
-        var $div = $("<div>", {id: tank.tankId, class: "tank clearfix"});
+        var $div = $("<div>", {id: tank.tankId, class: "tank"});
         var $shell = $("<div>", {id: tank.tankId, class: "tankshell"});
-        $shell.prepend($('<img>', {id: tank.tankId + 'Imgid', src: tank.tankImage, class: "pieces"}));
-        $div.append($shell);
+        var $namediv = $("<div>", {class: "tankname"});
         var $scorediv = $("<div>", {class: "tankscore"});
-        $div.append($scorediv);
+
+        $shell.prepend($('<img>', {id: tank.tankId + 'Imgid', src: tank.tankImage, class: "pieces"}));
+        $shell.append($namediv);
+        $shell.append($scorediv);
+        $div.append($shell);
+
+        var namehtml = "<p>" + tank.tankName + "</p>";
+        $namediv.html(namehtml);
+        var healthhtml = "<p>" + tank.hp + "</p>";
+        $scorediv.html(healthhtml);
 
         return $div;
     }
