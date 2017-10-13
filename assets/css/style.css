@@ -27,6 +27,7 @@ body {
     border-color: #8a6d3b;
     width: 150px;
     padding-left: 18px;
+    padding-top: 8px;
 }
 
 .pieces {
@@ -46,7 +47,7 @@ body {
      bottom: 36px;
      width: 100%;
      text-align: center;
-     font-size: x-small;
+     font-size: small;
  }
 
 .tankname {

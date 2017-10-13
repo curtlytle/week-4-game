@@ -9,13 +9,17 @@ $(document).ready(function () {
         }
     });
 
+
     var tanks = [
         {
             tankId: "tank1",
             scorediv: undefined,
             maindiv: undefined,
             tankName: "American M26",
-            hp: 75,
+            hp: 55,
+            ap: 4,
+            oap: 4,
+            ca: 7,
             tankImage: "assets/images/americanTank.png",
             friend: -1
         },
@@ -24,7 +28,10 @@ $(document).ready(function () {
             scorediv: undefined,
             maindiv: undefined,
             tankName: "German Panther",
-            hp: 80,
+            hp: 53,
+            ap: 6,
+            oap: 6,
+            ca: 6,
             tankImage: "assets/images/germanTank1.png",
             friend: -1
         },
@@ -33,7 +40,10 @@ $(document).ready(function () {
             scorediv: undefined,
             maindiv: undefined,
             tankName: "British Spitfire",
-            hp: 65,
+            hp: 49,
+            ap: 3,
+            oap: 3,
+            ca: 8,
             tankImage: "assets/images/britishTank.png",
             friend: -1
         },
@@ -42,7 +52,10 @@ $(document).ready(function () {
             scorediv: undefined,
             maindiv: undefined,
             tankName: "German Panzer",
-            hp: 72,
+            hp: 54,
+            ap: 5,
+            oap: 5,
+            ca: 6,
             tankImage: "assets/images/germanTank2.png",
             friend: -1
         },
@@ -51,7 +64,10 @@ $(document).ready(function () {
             scorediv: undefined,
             maindiv: undefined,
             tankName: "Russian Tiger",
-            hp: 60,
+            hp: 58,
+            ap: 3,
+            oap: 3,
+            ca: 5,
             tankImage: "assets/images/russianTank.png",
             friend: -1
         }
@@ -60,9 +76,12 @@ $(document).ready(function () {
 
     var friendCnt = 0;
     var enemyCnt = 0;
+    var battleOn = false;
     var instruction1 = $(".instructions1");
     var instruction2 = $(".instructions2");
     $("#battleButton").hide();
+    var myTank;
+    var enemyTank;
 
     for (var i = 0; i < tanks.length; i++) {
         var tank = tanks[i];
@@ -71,6 +90,10 @@ $(document).ready(function () {
 
     // $(".tank").on("click", function () {
     $(document).on("click", ".tank", function () {
+        if (battleOn) {
+            return;
+        }
+
         $(this).empty();
         var id = $(this).attr('id');
         var tank = getTankElement(id);
@@ -83,22 +106,60 @@ $(document).ready(function () {
 
             instruction2.html("Choose your Enemy");
             $tdiv.animateCss("shake");
+
             tank.scorediv.css("background-color", "blue");
-            // changeScore(tank.scorediv, 23);
+            myTank = tank;
         } else if (enemyCnt === 0) {
             enemyCnt++;
+            battleOn = true;
             $("#enemylist").prepend($tdiv);
             tank.scorediv.css("background-color", "purple");
             tank.friend = 0;
 
             instruction2.html("");
             instruction1.html("Click button to Battle");
-            $("#battleButton").show(1000);
+            $("#battleButton").show(500);
+            enemyTank = tank;
         }
     });
 
-    function changeScore(scored, num) {
-        scored.html("<p>" + num + "</p>");
+    function displayTankScore(tank) {
+        var display = "<p>hp: " + tank.hp + ", ap: " + tank.ap + ", ca: " + tank.ca + "</p>";
+        tank.scorediv.html(display);
+    }
+
+    var attack = true;
+    $("#battleButton").on("click", function () {
+        if (attack) {
+            $(this).html("< COUNTER<br>ATTACK");
+            attack = false;
+            attackEnemy();
+        } else {
+            $(this).html("ATTACK >");
+            attack = true;
+            enemyCounterAttack();
+        }
+    });
+
+    function attackEnemy() {
+        enemyTank.hp -= myTank.ap;
+        myTank.ap += myTank.oap;
+        displayTankScore(myTank);
+        if (enemyTank.hp < 0) {
+            enemyTank.maindiv.empty();
+            battleOn = false;
+            enemyCnt = 0;
+            $("#battleButton").html("ATTACK >");
+            $("#battleButton").hide();
+        } else {
+            displayTankScore(enemyTank);
+        }
+    }
+
+    function enemyCounterAttack() {
+        myTank.hp -= enemyTank.ca;
+        displayTankScore(myTank);
+        displayTankScore(enemyTank);
     }
 
     function getTankElement(tankId) {
@@ -123,7 +184,8 @@ $(document).ready(function () {
         $div.append($shell);
 
         $namediv.html("<p>" + tank.tankName + "</p>");
-        $scorediv.html("<p>" + tank.hp + "</p>");
+        // $scorediv.html("<p>" + tank.hp + "</p>");
+        displayTankScore(tank);
 
         $div.animateCss("shake");
         tank.maindiv = $div;
