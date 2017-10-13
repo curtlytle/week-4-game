@@ -77,19 +77,35 @@ $(document).ready(function () {
     var friendCnt = 0;
     var enemyCnt = 0;
     var battleOn = false;
-    var instruction1 = $(".instructions1");
-    var instruction2 = $(".instructions2");
-    $("#battleButton").hide();
-    var myTank;
-    var enemyTank;
+    var gameOver = false;
 
-    for (var i = 0; i < tanks.length; i++) {
+    $("#battleButton").hide();
+    var myTank = null;
+    var enemyTank = null;
+    var amountOfTanks = tanks.length;
+    var wins = 0;
+
+    function initialize() {
+        friendCnt = 0;
+        enemyCnt = 0;
+        battleOn = false;
+        gameOver = false;
+
+        $("#battleButton").hide();
+        myTank = null;
+        enemyTank = null;
+        amountOfTanks = tanks.length;
+        wins = 0;
+    }
+
+    for (var i = 0; i < amountOfTanks; i++) {
         var tank = tanks[i];
         $("#tanklist").append(getTankDiv(tank));
     }
 
     // $(".tank").on("click", function () {
     $(document).on("click", ".tank", function () {
+
         if (battleOn) {
             return;
         }
@@ -104,7 +120,7 @@ $(document).ready(function () {
             $("#friendlist").prepend($tdiv);
             tank.friend = 1;
 
-            instruction2.html("Choose your Enemy");
+            displayMsg2("Choose your Enemy");
             $tdiv.animateCss("shake");
 
             tank.scorediv.css("background-color", "blue");
@@ -116,42 +132,92 @@ $(document).ready(function () {
             tank.scorediv.css("background-color", "purple");
             tank.friend = 0;
 
-            instruction2.html("");
-            instruction1.html("Click button to Battle");
+            displayMsg2("");
+            displayMsg1("Click button to Battle");
             $("#battleButton").show(500);
+            setButtonToAttack();
             enemyTank = tank;
         }
     });
 
     function displayTankScore(tank) {
-        var display = "<p>hp: " + tank.hp + ", ap: " + tank.ap + ", ca: " + tank.ca + "</p>";
+        var display = "<p>Health: " + tank.hp + ", AP: " + tank.ap + ", CA: " + tank.ca + "</p>";
         tank.scorediv.html(display);
     }
 
-    var attack = true;
+
     $("#battleButton").on("click", function () {
-        if (attack) {
-            $(this).html("COUNTER");
-            attack = false;
+
+        if (isButtonOnAttack()) {
+            setButtonToCounter();
             attackEnemy();
-        } else {
-            $(this).html("ATTACK");
-            attack = true;
+        } else if (isButtonOnCounter()) {
+            setButtonToAttack();
             enemyCounterAttack();
+        } else if (isButtonOnRestart()) {
+            // todo do something here
         }
     });
+
+    function isButtonOnAttack() {
+        if ($("#battleButton").text() === "ATTACK") {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function isButtonOnCounter() {
+        if ($("#battleButton").text() === "COUNTER") {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function isButtonOnRestart() {
+        if ($("#battleButton").text() === "RESTART") {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    function setButtonToAttack() {
+        $("#battleButton").html("ATTACK");
+    }
+
+    function setButtonToCounter() {
+        $("#battleButton").html("COUNTER");
+    }
+
+    function setButtonToRestart() {
+        $("#battleButton").html("RESTART");
+    }
 
     function attackEnemy() {
         enemyTank.hp -= myTank.ap;
         myTank.ap += myTank.oap;
         displayTankScore(myTank);
         if (enemyTank.hp < 0) {
+            wins++;
             enemyTank.maindiv.empty();
             battleOn = false;
-            attack = true;
             enemyCnt = 0;
-            $("#battleButton").html("ATTACK");
-            $("#battleButton").hide();
+
+            if (wins >= (amountOfTanks - 1)) {
+                displayMsg1("You beat: " + enemyTank.tankName + ".  And you are VICTORIOUS!");
+                displayMsg2("");
+                setButtonToRestart();
+                gameOver = true;
+            } else {
+                displayMsg2("Choose your next tank");
+                displayMsg1("You beat: " + enemyTank.tankName);
+                setButtonToAttack();
+                $("#battleButton").hide();
+            }
+
         } else {
             displayTankScore(enemyTank);
         }
@@ -161,6 +227,21 @@ $(document).ready(function () {
         myTank.hp -= enemyTank.ca;
         displayTankScore(myTank);
         displayTankScore(enemyTank);
+
+        if (myTank.hp < 0) {
+            battleOn = false;
+            displayMsg1("You Have Been Conquered!");
+            displayMsg2("");
+            setButtonToRestart();
+        }
+
+    }
+
+    function displayMsg1(msg) {
+        $(".instructions1").html(msg);
+    }
+    function displayMsg2(msg) {
+        $(".instructions2").html(msg);
     }
 
     function getTankElement(tankId) {
