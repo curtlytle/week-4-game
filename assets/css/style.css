@@ -26,6 +26,7 @@ body {
     padding: 2px;
     border-color: #8a6d3b;
     width: 150px;
+    padding-left: 18px;
 }
 
 .pieces {
@@ -35,6 +36,7 @@ body {
 
 .tankshell {
     width:  150px;
+    height: 100px;
 }
 
 .tankscore {

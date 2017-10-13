@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>WWII</title>
+    <link rel="stylesheet" href="assets/css/bootstrap-3.3.7-dist/css/bootstrap.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
-    <!-- Added a link to Bootstrap-->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
-          integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
     <link rel="stylesheet" type="text/css" href="assets/css/animate.css">
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
 </head>
@@ -22,15 +21,15 @@
             <p> </p>
         </div>
         <div class="col-md-5 instructions2">
-            <p>Choose your Tank Squadron</p>
+            <p>Choose your Tank</p>
         </div>
     </div>
     <div class="row battle">
-        <div class="col-sm-3" id="friendlist"></div>
+        <div class="col-sm-2" id="friendlist"></div>
         <div class="col-sm-1">
-            <div id="vs">VS</div>
+            <div id="vs"><button id="battleButton" type="button" class="btn btn-default">Start Battle</button></div>
         </div>
-        <div class="col-sm-3" id="enemylist"></div>
+        <div class="col-sm-4" id="enemylist"></div>
         <div class="col-sm-5" id="tanklist"></div>
     </div>
 </div>
