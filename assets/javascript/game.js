@@ -131,11 +131,11 @@ $(document).ready(function () {
     var attack = true;
     $("#battleButton").on("click", function () {
         if (attack) {
-            $(this).html("< COUNTER<br>ATTACK");
+            $(this).html("COUNTER");
             attack = false;
             attackEnemy();
         } else {
-            $(this).html("ATTACK >");
+            $(this).html("ATTACK");
             attack = true;
             enemyCounterAttack();
         }
@@ -148,8 +148,9 @@ $(document).ready(function () {
         if (enemyTank.hp < 0) {
             enemyTank.maindiv.empty();
             battleOn = false;
+            attack = true;
             enemyCnt = 0;
-            $("#battleButton").html("ATTACK >");
+            $("#battleButton").html("ATTACK");
             $("#battleButton").hide();
         } else {
             displayTankScore(enemyTank);
