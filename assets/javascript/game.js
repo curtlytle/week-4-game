@@ -9,67 +9,105 @@ $(document).ready(function () {
         }
     });
 
-
-    var tanks = [
+    var originTanks = [
         {
             tankId: "tank1",
-            scorediv: undefined,
-            maindiv: undefined,
             tankName: "American M26",
-            hp: 55,
+            hp: 95,
             ap: 4,
-            oap: 4,
             ca: 7,
-            tankImage: "assets/images/americanTank.png",
-            friend: -1
+            tankImage: "assets/images/americanTank.png"
         },
         {
             tankId: "tank2",
-            scorediv: undefined,
-            maindiv: undefined,
             tankName: "German Panther",
-            hp: 53,
+            hp: 90,
             ap: 6,
-            oap: 6,
-            ca: 6,
-            tankImage: "assets/images/germanTank1.png",
-            friend: -1
+            ca: 8,
+            tankImage: "assets/images/germanTank1.png"
         },
         {
             tankId: "tank3",
-            scorediv: undefined,
-            maindiv: undefined,
             tankName: "British Spitfire",
-            hp: 49,
+            hp: 85,
             ap: 3,
-            oap: 3,
-            ca: 8,
-            tankImage: "assets/images/britishTank.png",
-            friend: -1
+            ca: 9,
+            tankImage: "assets/images/britishTank.png"
         },
         {
             tankId: "tank4",
-            scorediv: undefined,
-            maindiv: undefined,
             tankName: "German Panzer",
-            hp: 54,
+            hp: 87,
             ap: 5,
-            oap: 5,
-            ca: 6,
-            tankImage: "assets/images/germanTank2.png",
-            friend: -1
+            ca: 8,
+            tankImage: "assets/images/germanTank2.png"
         },
         {
             tankId: "tank5",
+            tankName: "Russian Tiger",
+            hp: 80,
+            ap: 3,
+            ca: 6,
+            tankImage: "assets/images/russianTank.png"
+        }
+    ];
+
+
+    var tanks = [
+        {
+            tankId: undefined,
             scorediv: undefined,
             maindiv: undefined,
-            tankName: "Russian Tiger",
-            hp: 58,
-            ap: 3,
-            oap: 3,
-            ca: 5,
-            tankImage: "assets/images/russianTank.png",
-            friend: -1
+            tankName: undefined,
+            oTank: undefined,
+            hp: 0,
+            ap: 0,
+            ca: 0,
+            tankImage: undefined
+        },
+        {
+            tankId: undefined,
+            scorediv: undefined,
+            maindiv: undefined,
+            tankName: undefined,
+            oTank: undefined,
+            hp: 0,
+            ap: 0,
+            ca: 0,
+            tankImage: undefined
+        },
+        {
+            tankId: undefined,
+            scorediv: undefined,
+            maindiv: undefined,
+            tankName: undefined,
+            oTank: undefined,
+            hp: 0,
+            ap: 0,
+            ca: 0,
+            tankImage: undefined
+        },
+        {
+            tankId: undefined,
+            scorediv: undefined,
+            maindiv: undefined,
+            tankName: undefined,
+            oTank: undefined,
+            hp: 0,
+            ap: 0,
+            ca: 0,
+            tankImage: undefined
+        },
+        {
+            tankId: undefined,
+            scorediv: undefined,
+            maindiv: undefined,
+            tankName: undefined,
+            oTank: undefined,
+            hp: 0,
+            ap: 0,
+            ca: 0,
+            tankImage: undefined
         }
     ];
 
@@ -98,27 +136,42 @@ $(document).ready(function () {
         wins = 0;
     }
 
-    for (var i = 0; i < amountOfTanks; i++) {
-        var tank = tanks[i];
-        $("#tanklist").append(getTankDiv(tank));
+    function loadTanks() {
+        for (var i = 0; i < amountOfTanks; i++) {
+            var tank = tanks[i];
+            loadThisTank(tank, i);
+            $("#tanklist").append(getTankDiv(tank));
+        }
     }
+    loadTanks();
+
+    function loadThisTank(tank, node) {
+        var otank = originTanks[node];
+        tank.tankId = otank.tankId;
+        tank.tankName = otank.tankName;
+        tank.hp = otank.hp;
+        tank.ap = otank.ap;
+        tank.ca = otank.ca;
+        tank.tankImage = otank.tankImage;
+        tank.oTank = otank;
+    }
+
 
     // $(".tank").on("click", function () {
     $(document).on("click", ".tank", function () {
-
         if (battleOn) {
             return;
         }
 
-        $(this).empty();
         var id = $(this).attr('id');
         var tank = getTankElement(id);
         var $tdiv = getTankDiv(tank);
 
+        document.getElementById(id).remove();
+
         if (friendCnt === 0) {
             friendCnt++;
             $("#friendlist").prepend($tdiv);
-            tank.friend = 1;
 
             displayMsg2("Choose your Enemy");
             $tdiv.animateCss("shake");
@@ -130,7 +183,6 @@ $(document).ready(function () {
             battleOn = true;
             $("#enemylist").prepend($tdiv);
             tank.scorediv.css("background-color", "purple");
-            tank.friend = 0;
 
             displayMsg2("");
             displayMsg1("Click button to Battle");
@@ -155,9 +207,26 @@ $(document).ready(function () {
             setButtonToAttack();
             enemyCounterAttack();
         } else if (isButtonOnRestart()) {
-            // todo do something here
+            restartGame();
         }
     });
+
+    function restartGame() {
+        var tank1 = document.getElementById(myTank.tankId);
+        if (tank1 != null) {
+            tank1.remove();
+        }
+
+        var tank2 = document.getElementById(enemyTank.tankId);
+        if (tank2 != null) {
+            tank2.remove();
+        }
+
+        displayMsg2("Choose your tank");
+        displayMsg1("");
+        loadTanks();
+        initialize();
+    }
 
     function isButtonOnAttack() {
         if ($("#battleButton").text() === "ATTACK") {
@@ -198,11 +267,12 @@ $(document).ready(function () {
 
     function attackEnemy() {
         enemyTank.hp -= myTank.ap;
-        myTank.ap += myTank.oap;
+        myTank.ap += myTank.original_ap;
         displayTankScore(myTank);
         if (enemyTank.hp < 0) {
             wins++;
-            enemyTank.maindiv.empty();
+            document.getElementById(enemyTank.tankId).remove();
+            // enemyTank.maindiv.empty();
             battleOn = false;
             enemyCnt = 0;
 
@@ -255,7 +325,7 @@ $(document).ready(function () {
 
     function getTankDiv(tank) {
         var $div = $("<div>", {id: tank.tankId, class: "tank"});
-        var $shell = $("<div>", {id: tank.tankId, class: "tankshell"});
+        var $shell = $("<div>", {class: "tankshell"});
         var $namediv = $("<div>", {class: "tankname"});
         var $scorediv = $("<div>", {class: "tankscore"});
         tank.scorediv = $scorediv;
@@ -266,7 +336,6 @@ $(document).ready(function () {
         $div.append($shell);
 
         $namediv.html("<p>" + tank.tankName + "</p>");
-        // $scorediv.html("<p>" + tank.hp + "</p>");
         displayTankScore(tank);
 
         $div.animateCss("shake");
