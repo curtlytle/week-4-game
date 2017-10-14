@@ -13,41 +13,41 @@ $(document).ready(function () {
         {
             tankId: "tank1",
             tankName: "American M26",
-            hp: 95,
+            hp: 92,
             ap: 4,
-            ca: 7,
+            ca: 9,
             tankImage: "assets/images/americanTank.png"
         },
         {
             tankId: "tank2",
             tankName: "German Panther",
-            hp: 90,
+            hp: 96,
             ap: 6,
-            ca: 8,
+            ca: 7,
             tankImage: "assets/images/germanTank1.png"
         },
         {
             tankId: "tank3",
             tankName: "British Spitfire",
-            hp: 85,
+            hp: 87,
             ap: 3,
-            ca: 9,
+            ca: 10,
             tankImage: "assets/images/britishTank.png"
         },
         {
             tankId: "tank4",
             tankName: "German Panzer",
-            hp: 87,
+            hp: 89,
             ap: 5,
-            ca: 8,
+            ca: 9,
             tankImage: "assets/images/germanTank2.png"
         },
         {
             tankId: "tank5",
             tankName: "Russian Tiger",
-            hp: 80,
-            ap: 3,
-            ca: 6,
+            hp: 82,
+            ap: 4,
+            ca: 8,
             tankImage: "assets/images/russianTank.png"
         }
     ];
@@ -267,7 +267,7 @@ $(document).ready(function () {
 
     function attackEnemy() {
         enemyTank.hp -= myTank.ap;
-        myTank.ap += myTank.original_ap;
+        myTank.ap += myTank.oTank.ap;
         displayTankScore(myTank);
         if (enemyTank.hp < 0) {
             wins++;
