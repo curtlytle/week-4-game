@@ -173,7 +173,8 @@ $(document).ready(function () {
             friendCnt++;
             $("#friendlist").prepend($tdiv);
 
-            displayMsg2("Choose your Enemy");
+            displayMsg1("Choose your Enemy");
+            displayMsg2("");
             $tdiv.animateCss("shake");
 
             tank.scorediv.css("background-color", "blue");
@@ -215,11 +216,21 @@ $(document).ready(function () {
         var tank1 = document.getElementById(myTank.tankId);
         if (tank1 != null) {
             tank1.remove();
+            myTank.hp = -1;
         }
 
         var tank2 = document.getElementById(enemyTank.tankId);
         if (tank2 != null) {
             tank2.remove();
+            enemyTank.hp = -1;
+        }
+
+        for (var i = 0; i < tanks.length; i++) {
+            var tank = tanks[i];
+            if (tank.hp >= 0) {
+                var tankTmp = document.getElementById(tank.tankId);
+                tankTmp.remove();
+            }
         }
 
         displayMsg2("Choose your tank");
@@ -268,6 +279,7 @@ $(document).ready(function () {
     function attackEnemy() {
         enemyTank.hp -= myTank.ap;
         myTank.ap += myTank.oTank.ap;
+        enemyTank.maindiv.animateCss("shake");
         displayTankScore(myTank);
         if (enemyTank.hp < 0) {
             wins++;
@@ -278,12 +290,12 @@ $(document).ready(function () {
 
             if (wins >= (amountOfTanks - 1)) {
                 displayMsg1("You beat: " + enemyTank.tankName + ".  And you are VICTORIOUS!");
-                displayMsg2("");
+                displayMsg2("Tank List");
                 setButtonToRestart();
                 gameOver = true;
             } else {
-                displayMsg2("Choose your next tank");
-                displayMsg1("You beat: " + enemyTank.tankName);
+                displayMsg1("Choose your next Enemy");
+                displayMsg2("You just beat: " + enemyTank.tankName);
                 setButtonToAttack();
                 $("#battleButton").hide();
             }
@@ -297,11 +309,12 @@ $(document).ready(function () {
         myTank.hp -= enemyTank.ca;
         displayTankScore(myTank);
         displayTankScore(enemyTank);
+        myTank.maindiv.animateCss("shake");
 
         if (myTank.hp < 0) {
             battleOn = false;
             displayMsg1("You Have Been Conquered!");
-            displayMsg2("");
+            displayMsg2("Tank List");
             setButtonToRestart();
         }
 
@@ -311,6 +324,9 @@ $(document).ready(function () {
         $(".instructions1").html(msg);
     }
     function displayMsg2(msg) {
+        if (msg.length === 0) {
+            msg = "Tank List";
+        }
         $(".instructions2").html(msg);
     }
 
@@ -338,7 +354,7 @@ $(document).ready(function () {
         $namediv.html("<p>" + tank.tankName + "</p>");
         displayTankScore(tank);
 
-        $div.animateCss("shake");
+        $div.animateCss("fadeInUp");
         tank.maindiv = $div;
 
         return $div;

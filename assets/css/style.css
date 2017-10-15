@@ -23,17 +23,17 @@ body {
 }
 
 .tank {
-    padding: 2px;
     border-color: #8a6d3b;
     width: 150px;
-    padding-left: 18px;
-    padding-top: 8px;
+    margin: 5px;
+    float: left;
 }
 
 .pieces {
     width: 150px;
     height: 95px;
 }
+
 
 .tankshell {
     width:  150px;
